@@ -2,9 +2,7 @@
 {% load static %}
 {% block content %}
   {% for content in contents %}
-    <div>
-      <h2 class="detail">{{ content.title }}</h2>
-    </div>
+    <h2 class="detail">{{ content.title }}</h2>
     <span>{{ content.post_datetime }}</span>
     <p>{{ content.body|linebreaksbr|urlize }}</p>
     <p>

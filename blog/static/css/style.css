@@ -1,0 +1,31 @@
+h1 {
+	background-color: #3b4675;
+	font-size: 30px;
+	color: white;
+	padding: 20px;
+}
+
+h1 a {
+	color: white;
+	text-decoration: none;
+}
+
+h1 a:hover {
+	color: white;
+}
+
+.post_list {
+	padding: 10px;
+}
+
+.detail {
+	padding: 20px;
+}
+
+h2 {
+	font-size: 40px;
+}
+
+.container { 
+	background-color: #f99;
+}

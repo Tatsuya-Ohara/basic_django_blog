@@ -2,8 +2,13 @@
 
 {% block content %}
   {% comment %} {% for post in post_list %} {% endcomment %}
+  <form method="GET" action="{% url 'index' %}">
+    <input type="text" name="keyword">
+    <button type="submit">検索</button>
+  </form>
   {% for post in page_obj.object_list.all %}
     <div>
+
       <div class="post_list">
         <a href="{% url 'detail' pk=post.pk %}" class="link_detail">
           {{ post.title }}
@@ -17,15 +22,6 @@
     </div>
   {% endfor %}
 
-  {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
-  {% endif %}
+  {% include 'blog/page.html' %}
 
-  <!-- 1/3 の部分 -->
-  {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}
-
-  <!-- 次へ の部分 -->
-  {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">次へ</a>
-  {% endif %}
 {% endblock %}

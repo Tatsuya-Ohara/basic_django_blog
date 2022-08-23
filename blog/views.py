@@ -3,7 +3,11 @@ from .models import BlogModel
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import Http404
 
+from django.contrib import messages
+from django.db.models import Q
+
 def paginate_queryset(request, queryset, count):
+    """ページネーション"""
     paginator = Paginator(queryset, count)
     page = request.GET.get('page')
     try:
@@ -15,6 +19,7 @@ def paginate_queryset(request, queryset, count):
     return page_obj
 
 def index(request):
+    """index.htmlのデータ用"""
     post_list = BlogModel.objects.order_by('-post_datetime')
     page_obj = paginate_queryset(request, post_list, 10)
     # page_obj = paginate_queryset(request, post_list, 1)
@@ -22,6 +27,21 @@ def index(request):
         'post_list': post_list,
         'page_obj': page_obj,
     }
+    
+    # 検索機能の処理
+    keyword = request.GET.get('keyword')
+    if keyword:
+        print('keywordが入力された')
+        '''テキスト用のQオブジェクトを追加'''
+        post_list = post_list.filter(
+            (Q(title__icontains=keyword) | Q(body__icontains=keyword))
+        )
+        messages.success(request, '「{}」の検索結果'.format(keyword))
+        
+        context = {
+            'post_list': post_list,
+            'page_obj': page_obj,
+        }
     
     return render(request, 'blog/index.html', context)
 
@@ -34,3 +54,7 @@ def detail(request, pk):
     #     raise Http404('記事が見つかりません。')
         
     return render(request, 'blog/detail.html', {'content': content})
+
+
+
+# 参考サイト: https://zerofromlight.com/blogs/detail/59/

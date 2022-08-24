@@ -1,5 +1,5 @@
 from django import forms
-from .models import Tag
+from .models import Tag, Category
 
 
 class PostSearchForm(forms.Form):
@@ -7,7 +7,7 @@ class PostSearchForm(forms.Form):
     # キーワード入力用フォーム
     keyword = forms.CharField(
 		label='検索キーワード',
-		# 空欄でも問題ないようにする
+		# 空欄でも問題ないようにする: Trueにすると空欄を許さない
   		required=False,
 	)
     
@@ -18,3 +18,11 @@ class PostSearchForm(forms.Form):
 		required=False,
 		queryset=Tag.objects.order_by('name'),
 	)
+    
+    # カテゴリー絞り込み用フォーム
+    category = forms.CharField(
+		label='カテゴリーでの絞り込み',
+		# 空欄でも問題ないようにする
+		required=False,
+	)
+    

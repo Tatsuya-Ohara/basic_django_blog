@@ -36,8 +36,8 @@ def index(request):
         if keyword:
             # テキスト用のQオブジェクトを追加
             post_list = post_list.filter(
-                (Q(title__icontains=keyword)|Q(body__icontains=keyword), \
-                 Q(tag__incontains=tags), Q(category__incontains=category))
+                (Q(title__icontains=keyword)|Q(body__icontains=keyword)\
+                &Q(tag__incontains=tags)&Q(category__incontains=category))
             )
             messages.success(request, '「{}」の検索結果'.format(keyword))
             

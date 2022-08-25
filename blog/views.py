@@ -33,19 +33,42 @@ def index(request):
         keyword = form.cleaned_data['keyword']
         tags = form.cleaned_data['tags']
         category = form.cleaned_data['category']
+        
         if keyword:
             # テキスト用のQオブジェクトを追加
             post_list = post_list.filter(
-                (Q(title__icontains=keyword)|Q(body__icontains=keyword)\
-                &Q(tag__incontains=tags)&Q(category__incontains=category))
+                Q(title__icontains=keyword)|Q(body__icontains=keyword)
             )
-            messages.success(request, '「{}」の検索結果'.format(keyword))
-            
+        if category:
+            post_list = post_list.filter(Q(category__name__icontains=category))
+        if tags:
+            post_list = post_list.filter(tag__in=[tags])
+            # for tag in tags:
+            #     # 全てを含む
+            #     post_list = post_list.filter(tag=tag)
+                
+        messages.success(request, '「{}」の検索結果'.format(keyword))
+        
+        page_obj = paginate_queryset(request, post_list, 10)
+        context = {
+        'post_list': post_list,
+        'page_obj': page_obj,
+        'form': form,
+        'keyword': keyword,
+        'tags': tags,
+        'category': category,
+        'messages': messages,
+        }
+        return render(request, 'blog/index.html', context)
+    
     page_obj = paginate_queryset(request, post_list, 10)
     context = {
         'post_list': post_list,
         'page_obj': page_obj,
         'form': form,
+        'keyword': "",
+        'tags': "",
+        'category': "",
         'messages': messages,
     }
     

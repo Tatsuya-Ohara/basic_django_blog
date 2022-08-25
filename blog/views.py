@@ -31,6 +31,8 @@ def index(request):
         # 入力されたキーワードの取得: cleaned_dataはform.is_validが必要。
         # formを扱う際には必ずform.is_validを呼ぶ。
         keyword = form.cleaned_data['keyword']
+        # ModelChoiceFieldを使うとリストではなくstrで返ってくる。→[tags]のように角かっこが必要
+        # ModelMultipleChoiceFieldだとリスト形式で返ってくる。
         tags = form.cleaned_data['tags']
         category = form.cleaned_data['category']
         

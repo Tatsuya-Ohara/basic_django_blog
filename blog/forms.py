@@ -12,6 +12,7 @@ class PostSearchForm(forms.Form):
 	)
     
     # タグ絞り込み用フォーム
+    # tags = forms.ModelMultipleChoiceField(
     tags = forms.ModelChoiceField(
 		label='タグでの絞り込み',
 		# 空欄でも問題ないようにする

@@ -43,8 +43,12 @@ def index(request):
             )
         if category:
             post_list = post_list.filter(Q(category__name__icontains=category))
+            # ModelChoiceFieldに変更したことにより、Qを外す。
+            post_list = post_list.filter(category=category)
         if tags:
-            post_list = post_list.filter(tag__in=[tags])
+            # ModelMultipleChoiceFieldの場合は[]は不要。→Webページから送信されたidのリストをもとに、モデルのインスタンスリストを生成してくれているため。
+            # ModelChoiceFieldの場合はリスト化はしてくれない？ため、[tags]のようにする。
+            post_list = post_list.filter(tag__in=tags)
             # for tag in tags:
             #     # 全てを含む
             #     post_list = post_list.filter(tag=tag)

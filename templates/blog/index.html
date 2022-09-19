@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+{% load static %}
   {% comment %} {% for post in post_list %} {% endcomment %}
   {% comment %} <form method="GET" action="{% url 'index' %}">
     <input type="text" name="keyword">
@@ -13,8 +14,13 @@
   </form>
   {% for post in page_obj.object_list.all %}
     <div>
-
       <div class="post_list">
+        {% comment %} {% if post.thumbnail == "" %} {% endcomment %}
+        {% comment %} {% if post.thumbnail is None %}
+          <img src="{% static 'noimage.png' %}" alt="eyecatch" width="200px" height="200px">        
+        {% else %} {% endcomment %}
+        <img src="post.thumbnail" alt="eyecatch" width="200px" height="200px">  
+        {% comment %} {% endif %} {% endcomment %}
         <a href="{% url 'detail' pk=post.pk %}" class="link_detail">
           {{ post.title }}
         </a>

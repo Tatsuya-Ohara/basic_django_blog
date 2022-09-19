@@ -23,6 +23,7 @@ class Tag(models.Model):
 class BlogModel(models.Model):
     title = models.CharField(max_length=50, verbose_name='タイトル')
     body = models.TextField(verbose_name='本文')
+    thumbnail = models.ImageField(verbose_name='サムネイル', default='static/noimage.png',upload_to='static/') # サムネイル用のフィールドを用意
     post_datetime = models.DateTimeField(default=timezone.now, verbose_name='投稿日時')
     # category = models.CharField(max_length=40, choices=category_of_choice, verbose_name='カテゴリー')
     category = models.ForeignKey(Category, verbose_name='カテゴリー', on_delete=models.PROTECT, null=True, blank=True)

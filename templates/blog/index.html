@@ -19,9 +19,18 @@
         {% comment %} {% if post.thumbnail is None %}
           <img src="{% static 'noimage.png' %}" alt="eyecatch" width="200px" height="200px">        
         {% else %} {% endcomment %}
-        <img src="post.thumbnail" alt="eyecatch" width="200px" height="200px">  
+        {% comment %} <img src="{{ post.thumbnail.url }}" alt="eyecatch" width="200px" height="200px"> {% endcomment %}
+
+        {% comment %} サムネイルが設定されている場合 {% endcomment %}
+        {% if post.thumbnail %}
+          <img src="{{ post.thumbnail.url }}" alt="eyecatch" width="200px" height="200px">
+        
+          {% comment %} サムネイルが設定されていない場合 {% endcomment %}
+        {% else %}
+          <img src="{% static 'noimage.png' %}" alt="eyecatch" width="200px" height="200px">
+        {% endif %}
         {% comment %} {% endif %} {% endcomment %}
-        <a href="{% url 'detail' pk=post.pk %}" class="link_detail">
+        <br><a href="{% url 'detail' pk=post.pk %}" class="link_detail">
           {{ post.title }}
         </a>
         <br>

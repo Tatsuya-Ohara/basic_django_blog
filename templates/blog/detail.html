@@ -7,6 +7,12 @@
   <p>
     <a href="/">TOPに戻る</a>
   </p>
+
+{% for comment in comments %}
+  <div class='border-bottom'>{{ comment.name }} {{ comment.created_at }}</div>
+  <div class='mt-2'>{{ comment.text }}</div>
+{% endfor %}
+
 {% endblock %}
 
 {% comment %} タブの名前の付け方：https://zerofromlight.com/blogs/detail/6/ {% endcomment %}

@@ -34,3 +34,13 @@ class BlogModel(models.Model):
     
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    """記事に紐づくコメント"""
+    name = models.CharField('名前', max_length=255, default='名無しさん')
+    text = models.TextField('本文')
+    target = models.ForeignKey(BlogModel, on_delete=models.CASCADE, verbose_name='対象記事')
+    created_at = models.DateTimeField('作成日', default=timezone.now)
+    
+    def __str__(self):
+        return self.text[:20]

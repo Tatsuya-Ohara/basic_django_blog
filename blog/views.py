@@ -1,12 +1,13 @@
-from django.shortcuts import render, get_object_or_404
-from .models import BlogModel
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import BlogModel, Comment
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import Http404
+from django.views import generic
 
 from django.contrib import messages
 from django.db.models import Q
 
-from .forms import PostSearchForm
+from .forms import PostSearchForm, CommentCreateForm
 
 def paginate_queryset(request, queryset, count):
     """ページネーション"""
@@ -106,6 +107,23 @@ def detail(request, pk):
         
     return render(request, 'blog/detail.html', {'content': content})
 
-
-
 # 参考サイト: https://zerofromlight.com/blogs/detail/59/
+
+class CommentCreate(generic.CreateView):
+    """記事へのコメント"""
+    template_name = 'comment_form.html'
+    model = Comment
+    form_class = CommentCreateForm
+    
+    def form_valid(self, form):
+        post_pk = self.kwargs['pk']
+        post = get_object_or_404(BlogModel, pk=post_pk)
+        comment = form.save(commit=False)
+        comment.target = post
+        comment.save()
+        return redirect('detail', pk=post_pk)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = get_object_or_404(BlogModel, pk=self.kwargs['pk'])
+        return context

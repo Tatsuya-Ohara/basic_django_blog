@@ -1,5 +1,7 @@
+from tkinter import Widget
+from xml.etree.ElementTree import Comment
 from django import forms
-from .models import Tag, Category
+from .models import Tag, Category, Comment
 
 
 class PostSearchForm(forms.Form):
@@ -31,3 +33,10 @@ class PostSearchForm(forms.Form):
 	# 	# 空欄でも問題ないようにする
 	# 	required=False,
 	# )
+
+class CommentCreateForm(forms.ModelForm):
+    """コメント投稿フォーム"""
+    
+    class Meta:
+        model = Comment
+        exclude = ('target', 'created_at')

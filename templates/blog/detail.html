@@ -8,7 +8,19 @@
   <a href="/">TOPに戻る</a>
 </p>
 
-{% if comments %}
+{% for comment in comments %}
+<hr>
+<div class="border-bottom">投稿者：{{comment.name}}｜投稿日：{{ comment.created_at }}</div>
+<div class="mt-2">コメント：{{ comment.text }}</div>
+<hr>
+{% empty %}
+<hr>
+コメントがありません。
+<hr>
+{% endfor %}
+
+
+{% comment %} {% if comments %}
 <hr>
   {% for comment in comments %}
   <div class='border-bottom'>投稿者：{{ comment.name }}｜投稿日：{{ comment.created_at }}</div>  
@@ -20,7 +32,7 @@
 <hr>
   コメントがありませんでした。
 <hr>
-{% endif %}
+{% endif %} {% endcomment %}
 
 {% comment %} 追加、更新、削除は"POST"とする。逆に"GET"は検索フォームなど。入力内容がURLに表示されるのでブックマークなどで共有ができる。 {% endcomment %}
 <form action="" method="POST">

@@ -99,12 +99,10 @@ def index(request):
 
 def detail(request, pk):
     content = get_object_or_404(BlogModel, pk=pk)
-    try:
-        # comments = Comment.objects.get(pk=pk)
-        comments = Comment.objects.filter(target=pk)
-        print(comments)
-    except Comment.DoesNotExist:
-        comments = None
+
+    # comments = Comment.objects.get(pk=pk)
+    comments = Comment.objects.filter(target=pk)
+    print(comments)
     print('コメントの件数', comments)
     
     # 送信データがあればフォームに紐付けられる / なければからのフォームになる

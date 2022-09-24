@@ -1,17 +1,34 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 {% block content %}
-  <h2 class="detail">{% block title %}My Blog｜{{ content.title }}{% endblock %}</h2>
-  <span>{{ content.post_datetime }}</span>
-  <p>{{ content.body|linebreaksbr|urlize }}</p>
-  <p>
-    <a href="/">TOPに戻る</a>
-  </p>
+<h2 class="detail">{% block title %}My Blog｜{{ content.title }}{% endblock %}</h2>
+<span>{{ content.post_datetime }}</span>
+<p>{{ content.body|linebreaksbr|urlize }}</p>
+<p>
+  <a href="/">TOPに戻る</a>
+</p>
 
-{% for comment in comments %}
-  <div class='border-bottom'>{{ comment.name }} {{ comment.created_at }}</div>
-  <div class='mt-2'>{{ comment.text }}</div>
-{% endfor %}
+{% if comments %}
+<hr>
+  {% for comment in comments %}
+  <div class='border-bottom'>投稿者：{{ comment.name }}｜投稿日：{{ comment.created_at }}</div>  
+  <div class='mt-2'>コメント：{{ comment.text }}</div>
+  <hr>
+  {% endfor %}
+
+{% else %}
+<hr>
+  コメントがありませんでした。
+<hr>
+{% endif %}
+
+{% comment %} 追加、更新、削除は"POST"とする。逆に"GET"は検索フォームなど。入力内容がURLに表示されるのでブックマークなどで共有ができる。 {% endcomment %}
+<form action="" method="POST">
+  {{ form.as_p }}
+  <button type="submit">送信</button>
+  {% comment %} POSTの際にはcsrf_tokenが必要 {% endcomment %}
+  {% csrf_token %}
+</form>
 
 {% endblock %}
 

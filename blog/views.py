@@ -99,31 +99,38 @@ def index(request):
 
 def detail(request, pk):
     content = get_object_or_404(BlogModel, pk=pk)
+    try:
+        # comments = Comment.objects.get(pk=pk)
+        comments = Comment.objects.filter(target=pk)
+        print(comments)
+    except Comment.DoesNotExist:
+        comments = None
+    print('コメントの件数', comments)
+    
+    # 送信データがあればフォームに紐付けられる / なければからのフォームになる
+    form = CommentCreateForm(request.POST or None)
+    # 送信データがあれば入力チェックを行う / なければからのフォームを表示する
+    if form.is_valid():
+        # 記事とコメントを紐づける前の処理(saveメソッドを呼び出す) → 公式で推奨された方法。form.instance.target = ...ともできるが、公式のやり方ではない。
+        comment = form.save(commit=False)
+        # 記事と紐付けをする
+        comment.target = content
+        # フォームの内容をもとにコメントを作成
+        comment.save()
+        # 保存/更新/削除後はリダイレクトが必要
+        return redirect('index')
+    
+    context = {
+        'contents': content,
+        'form': form,
+        'comments': comments,
+    }
     # # 少し長い表現
     # try:
     #     content = BlogModel.objects.get(pk=pk)
     # except BlogModel.DoesNotExist:
     #     raise Http404('記事が見つかりません。')
-        
-    return render(request, 'blog/detail.html', {'content': content})
+    return render(request, 'blog/detail.html', context)
+    # return render(request, 'blog/detail.html', {'context': context})
 
 # 参考サイト: https://zerofromlight.com/blogs/detail/59/
-
-class CommentCreate(generic.CreateView):
-    """記事へのコメント"""
-    template_name = 'comment_form.html'
-    model = Comment
-    form_class = CommentCreateForm
-    
-    def form_valid(self, form):
-        post_pk = self.kwargs['pk']
-        post = get_object_or_404(BlogModel, pk=post_pk)
-        comment = form.save(commit=False)
-        comment.target = post
-        comment.save()
-        return redirect('detail', pk=post_pk)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['post'] = get_object_or_404(BlogModel, pk=self.kwargs['pk'])
-        return context

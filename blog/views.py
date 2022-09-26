@@ -99,11 +99,11 @@ def index(request):
 
 def detail(request, pk):
     content = get_object_or_404(BlogModel, pk=pk)
-
     # comments = Comment.objects.get(pk=pk)
     comments = Comment.objects.filter(target=pk)
-    print(comments)
-    print('コメントの件数', comments)
+    # print(comments)
+    # print('コメントの件数', comments)
+    relation_post = BlogModel.objects.filter(relation_posts=pk)
     
     # 送信データがあればフォームに紐付けられる / なければからのフォームになる
     form = CommentCreateForm(request.POST or None)
@@ -122,6 +122,7 @@ def detail(request, pk):
         'contents': content,
         'form': form,
         'comments': comments,
+        'relation_post': relation_post,
     }
     # # 少し長い表現
     # try:

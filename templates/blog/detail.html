@@ -42,8 +42,18 @@
   {% csrf_token %}
 </form>
 
-<h2>関連記事</h2>
-
+<hr>
+<h2 class="title">関連記事</h2>
+{% for rel_post in relation_post %}
+<ul>
+  <li>
+  <a href="{% url 'detail' pk=rel_post.pk %}">{{ rel_post.title }}</a>
+  </li>
+  </ul>
+   
+  
+{% endfor %}
+<hr>
 
 {% endblock %}
 

@@ -31,6 +31,7 @@ class BlogModel(models.Model):
     category = models.ForeignKey(Category, verbose_name='カテゴリー', on_delete=models.PROTECT, null=True, blank=True)
     # tag = models.CharField(max_length=40, choices=tag_of_choice, verbose_name='タグ')
     tag = models.ManyToManyField(Tag, blank=True, verbose_name='タグ')
+    relation_posts = models.ManyToManyField('self', verbose_name='関連記事', blank=True)
     
     def __str__(self):
         return self.title

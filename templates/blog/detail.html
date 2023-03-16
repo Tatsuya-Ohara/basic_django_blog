@@ -22,15 +22,15 @@
 
 {% comment %} {% if comments %}
 <hr>
-  {% for comment in comments %}
-  <div class='border-bottom'>投稿者：{{ comment.name }}｜投稿日：{{ comment.created_at }}</div>  
-  <div class='mt-2'>コメント：{{ comment.text }}</div>
-  <hr>
-  {% endfor %}
+{% for comment in comments %}
+<div class='border-bottom'>投稿者：{{ comment.name }}｜投稿日：{{ comment.created_at }}</div>
+<div class='mt-2'>コメント：{{ comment.text }}</div>
+<hr>
+{% endfor %}
 
 {% else %}
 <hr>
-  コメントがありませんでした。
+コメントがありませんでした。
 <hr>
 {% endif %} {% endcomment %}
 
@@ -47,11 +47,11 @@
 {% for rel_post in relation_post %}
 <ul>
   <li>
-  <a href="{% url 'detail' pk=rel_post.pk %}">{{ rel_post.title }}</a>
+    <a href="{% url 'detail' pk=rel_post.pk %}">{{ rel_post.title }}</a>
   </li>
-  </ul>
-   
-  
+</ul>
+
+
 {% endfor %}
 <hr>
 
